@@ -1,0 +1,15 @@
+{% extends 'pages/base.html' %}
+
+{% block title %}About — RaceHub{% endblock %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container">
+        <h1 class="mb-4">About RaceHub</h1>
+        <p class="lead">RaceHub is a blog about motorsport news and racing events.</p>
+        <p>Here you can find articles about Formula 1, MotoGP and endurance racing.</p>
+        <p>Follow your favorite series and stay up to date with the latest results.</p>
+        <a href="{% url 'home' %}" class="btn btn-danger mt-3">Back to Home</a>
+    </div>
+</section>
+{% endblock %}
