@@ -15,36 +15,23 @@
     <div class="container">
         <h2 class="mb-4">Latest Articles</h2>
         <div class="row g-4">
+            {% for article in articles %}
             <div class="col-12 col-md-4">
                 <div class="card h-100">
                     <img src="https://placehold.co/600x300" class="card-img-top" alt="Article image">
                     <div class="card-body">
-                        <h5 class="card-title">Monaco GP: Verstappen Dominates</h5>
-                        <p class="card-text">Max Verstappen claimed a dominant victory at the Monaco Grand Prix, extending his championship lead.</p>
+                        <h5 class="card-title">{{ article.title }}</h5>
+                        <p class="card-text">{{ article.content|truncatewords:20 }}</p>
+                        <p class="text-muted small">{{ article.created_at }}</p>
                         <a href="#" class="btn btn-outline-danger">Read More</a>
                     </div>
                 </div>
             </div>
-            <div class="col-12 col-md-4">
-                <div class="card h-100">
-                    <img src="https://placehold.co/600x300" class="card-img-top" alt="Article image">
-                    <div class="card-body">
-                        <h5 class="card-title">MotoGP: Bagnaia Takes Pole in Italy</h5>
-                        <p class="card-text">Francesco Bagnaia set a blistering lap time to secure pole position at the Italian Grand Prix weekend.</p>
-                        <a href="#" class="btn btn-outline-danger">Read More</a>
-                    </div>
-                </div>
+            {% empty %}
+            <div class="col-12">
+                <p class="text-muted">No articles yet. Check back later!</p>
             </div>
-            <div class="col-12 col-md-4">
-                <div class="card h-100">
-                    <img src="https://placehold.co/600x300" class="card-img-top" alt="Article image">
-                    <div class="card-body">
-                        <h5 class="card-title">WEC: Ferrari Eyes Le Mans Glory</h5>
-                        <p class="card-text">Ferrari's hypercar squad is targeting a second consecutive Le Mans 24 Hours victory this season.</p>
-                        <a href="#" class="btn btn-outline-danger">Read More</a>
-                    </div>
-                </div>
-            </div>
+            {% endfor %}
         </div>
     </div>
 </section>
