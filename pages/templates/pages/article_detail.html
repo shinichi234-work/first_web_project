@@ -13,8 +13,9 @@
                 <div class="mt-4">
                     {{ article.content|linebreaks }}
                 </div>
-                <div class="mt-5">
+                <div class="mt-5 d-flex gap-2">
                     <a href="{% url 'home' %}" class="btn btn-outline-secondary">← Back to Articles</a>
+                    <a href="{% url 'article_update' article.pk %}" class="btn btn-danger">Edit</a>
                 </div>
             </div>
         </div>

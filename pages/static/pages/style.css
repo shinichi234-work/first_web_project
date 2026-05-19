@@ -1,0 +1,99 @@
+:root {
+    --navy: #0B1A3E;
+    --navy-dark: #060D1F;
+    --accent-red: #CC0001;
+    --accent-gold: #FCC200;
+}
+
+body {
+    background-color: #f4f5f7;
+}
+
+/* ── Navbar ── */
+.navbar {
+    background-color: var(--navy) !important;
+    border-bottom: 3px solid var(--accent-red);
+}
+
+.navbar-brand {
+    color: var(--accent-gold) !important;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.nav-link {
+    color: rgba(255,255,255,0.85) !important;
+    font-weight: 500;
+    transition: color 0.15s;
+}
+
+.nav-link:hover {
+    color: var(--accent-gold) !important;
+}
+
+/* ── Hero ── */
+.hero-section {
+    background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy) 70%, #162550 100%);
+    border-bottom: 3px solid var(--accent-red);
+}
+
+.hero-section .btn {
+    background-color: var(--accent-red);
+    border-color: var(--accent-red);
+    font-weight: 600;
+}
+
+.hero-section .btn:hover {
+    background-color: #a30001;
+    border-color: #a30001;
+}
+
+/* ── Cards ── */
+.card {
+    border: none;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(204,0,1,0.12);
+}
+
+.btn-outline-danger {
+    color: var(--accent-red);
+    border-color: var(--accent-red);
+}
+
+.btn-outline-danger:hover {
+    background-color: var(--accent-red);
+    border-color: var(--accent-red);
+}
+
+/* ── Section headers ── */
+.section-title {
+    font-weight: 700;
+    border-left: 4px solid var(--accent-red);
+    padding-left: 12px;
+}
+
+/* ── Footer ── */
+footer {
+    background-color: var(--navy-dark) !important;
+    border-top: 3px solid var(--accent-red);
+}
+
+footer a:hover {
+    color: var(--accent-gold) !important;
+}
+
+/* ── Forms ── */
+.btn-danger {
+    background-color: var(--accent-red);
+    border-color: var(--accent-red);
+}
+
+.btn-danger:hover {
+    background-color: #a30001;
+    border-color: #a30001;
+}
