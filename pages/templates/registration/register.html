@@ -1,0 +1,115 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register — RaceHub</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{% static 'pages/style.css' %}" rel="stylesheet">
+    <style>
+        body { background-color: #eef2f7; }
+        .auth-card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.10);
+            overflow: hidden;
+        }
+        .auth-header {
+            background: linear-gradient(135deg, #0B2A6B 0%, #1B4DE4 60%, #0090D0 100%);
+            padding: 2rem 2rem 1.5rem;
+            position: relative;
+        }
+        .auth-header::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #E8002D 0%, #ffffff 50%, #E8002D 100%);
+        }
+        .auth-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #1B4DE4, #0090D0, #ffffff, #0090D0, #1B4DE4);
+        }
+        .auth-body { padding: 2rem; background: #fff; }
+        .brand-tag {
+            font-size: 0.7rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.6);
+        }
+        .auth-title {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: 0.5px;
+        }
+        .btn-auth {
+            background: linear-gradient(90deg, #0B2A6B, #1B4DE4);
+            border: none;
+            color: #fff;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            padding: 0.6rem 2rem;
+            border-radius: 6px;
+            width: 100%;
+        }
+        .btn-auth:hover {
+            background: linear-gradient(90deg, #09215a, #1540c5);
+            color: #fff;
+        }
+        .form-control:focus {
+            border-color: #1B4DE4;
+            box-shadow: 0 0 0 0.2rem rgba(27,77,228,0.18);
+        }
+        .back-link { color: #1B4DE4; font-size: 0.9rem; }
+        .back-link:hover { color: #0B2A6B; }
+        .helptext { font-size: 0.78rem; color: #888; }
+    </style>
+</head>
+<body class="d-flex align-items-center justify-content-center min-vh-100">
+
+<div style="width: 100%; max-width: 440px; padding: 1rem;">
+    <div class="auth-card">
+        <div class="auth-header">
+            <p class="brand-tag mb-1">RaceHub</p>
+            <h1 class="auth-title mb-0">Create Account</h1>
+        </div>
+        <div class="auth-body">
+            <form method="post">
+                {% csrf_token %}
+                {% for field in form %}
+                <div class="mb-3">
+                    <label for="{{ field.id_for_label }}" class="form-label fw-semibold text-secondary small">{{ field.label }}</label>
+                    <input type="{{ field.field.widget.input_type }}"
+                           name="{{ field.html_name }}"
+                           id="{{ field.id_for_label }}"
+                           class="form-control{% if field.errors %} is-invalid{% endif %}"
+                           {% if field.value %}value="{{ field.value }}"{% endif %}>
+                    {% if field.help_text %}
+                        <div class="helptext mt-1">{{ field.help_text }}</div>
+                    {% endif %}
+                    {% if field.errors %}
+                        <div class="invalid-feedback">{{ field.errors|join:", " }}</div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+                <button type="submit" class="btn btn-auth mt-2">Create Account</button>
+            </form>
+            <hr class="my-3">
+            <p class="text-center mb-0 small text-muted">
+                Already have an account? <a href="{% url 'login' %}" class="back-link fw-semibold">Sign In</a>
+            </p>
+        </div>
+    </div>
+    <p class="text-center mt-3 small">
+        <a href="{% url 'home' %}" class="back-link">← Back to RaceHub</a>
+    </p>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
