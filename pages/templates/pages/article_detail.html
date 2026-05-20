@@ -8,7 +8,17 @@
         <div class="row justify-content-center">
             <div class="col-lg-8">
                 <h1 class="mb-3">{{ article.title }}</h1>
-                <p class="text-muted mb-4">Published: {{ article.created_at }} &nbsp;|&nbsp; Views: {{ article.views_count }}</p>
+                <p class="text-muted mb-2">Published: {{ article.created_at|date:"M j, Y" }} &nbsp;|&nbsp; Views: {{ article.views_count }}</p>
+                {% if article.tags.all %}
+                <div class="mb-3">
+                    {% for tag in article.tags.all %}
+                    <span class="badge" style="background:#1B4DE4;">{{ tag.name }}</span>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                {% if article.image %}
+                <img src="{{ article.image.url }}" alt="{{ article.title }}" class="img-fluid rounded mb-4" style="max-height:420px;width:100%;object-fit:cover;">
+                {% endif %}
                 <hr>
                 <div class="mt-4">
                     {{ article.content|linebreaks }}

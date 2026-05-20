@@ -8,7 +8,7 @@
         <div class="row justify-content-center">
             <div class="col-lg-7">
                 <h1 class="mb-4 section-title">{{ form_title }}</h1>
-                <form method="post">
+                <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="mb-3">
                         <label for="{{ form.title.id_for_label }}" class="form-label fw-semibold">{{ form.title.label }}</label>

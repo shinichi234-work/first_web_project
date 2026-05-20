@@ -21,11 +21,22 @@
             {% for article in articles %}
             <div class="col-12 col-md-4">
                 <div class="card h-100">
-                    <img src="https://placehold.co/600x300" class="card-img-top" alt="Article image">
+                    {% if article.image %}
+                    <img src="{{ article.image.url }}" class="card-img-top" alt="{{ article.title }}" style="height:200px;object-fit:cover;">
+                    {% else %}
+                    <img src="https://placehold.co/600x200/1a2f5e/ffffff?text=RaceHub" class="card-img-top" alt="No image" style="height:200px;object-fit:cover;">
+                    {% endif %}
                     <div class="card-body">
                         <h5 class="card-title">{{ article.title }}</h5>
                         <p class="card-text">{{ article.content|truncatewords:20 }}</p>
-                        <p class="text-muted small">{{ article.created_at }}</p>
+                        {% if article.tags.all %}
+                        <div class="mb-2">
+                            {% for tag in article.tags.all %}
+                            <span class="badge" style="background:#1B4DE4;">{{ tag.name }}</span>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                        <p class="text-muted small">{{ article.created_at|date:"M j, Y" }}</p>
                         <a href="{% url 'article_detail' article.pk %}" class="btn btn-outline-danger">Read More</a>
                     </div>
                 </div>
