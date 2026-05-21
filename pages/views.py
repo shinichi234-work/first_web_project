@@ -1,8 +1,9 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
-from .models import Article
-from .forms import FeedbackForm, ArticleForm
+from django.contrib import messages
+from .models import Article, Comment
+from .forms import FeedbackForm, ArticleForm, CommentForm
 
 
 def index(request):
@@ -21,8 +22,24 @@ def about(request):
 
 def article_detail(request, pk):
     article = get_object_or_404(Article, pk=pk)
-    context = {'article': article}
+    comment_form = CommentForm()
+    context = {'article': article, 'comment_form': comment_form}
     return render(request, 'pages/article_detail.html', context)
+
+
+@login_required
+def add_comment(request, pk):
+    article = get_object_or_404(Article, pk=pk)
+    form = CommentForm(request.POST)
+    if form.is_valid():
+        comment = form.save(commit=False)
+        comment.article = article
+        comment.author = request.user
+        comment.save()
+        messages.success(request, 'Your comment has been added.')
+    else:
+        messages.error(request, 'Could not add comment. Please try again.')
+    return redirect('article_detail', pk=pk)
 
 
 @login_required

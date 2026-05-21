@@ -4,14 +4,37 @@
 
 {% block content %}
 <section class="hero-section text-white py-5">
-    <div class="container text-center py-4">
-        <h1 class="display-4 fw-bold">{{ welcome_text }}</h1>
-        <p class="lead mt-3">Stay up to date with the latest Formula 1, MotoGP, and motorsport news from around the world.</p>
-        <a href="#" class="btn btn-danger btn-lg mt-3">Read Latest News</a>
+    <div class="container py-4">
+        <div class="row align-items-center">
+            <div class="col-lg-7">
+                <span class="hero-label">Motorsport News</span>
+                <h1 class="display-4 fw-bold mt-2">{{ welcome_text }}</h1>
+                <p class="lead mt-3 hero-sub">Formula 1, 24h Nürburgring, MotoGP and more — all in one place.</p>
+                <a href="#articles" class="btn btn-danger btn-lg mt-3">Read Latest News</a>
+            </div>
+            <div class="col-lg-5 d-none d-lg-flex justify-content-end">
+                <div class="hero-stat-box">
+                    <div class="hero-stat">
+                        <span class="hero-stat-num">2026</span>
+                        <span class="hero-stat-label">Season</span>
+                    </div>
+                    <div class="hero-divider"></div>
+                    <div class="hero-stat">
+                        <span class="hero-stat-num">F1</span>
+                        <span class="hero-stat-label">Championship</span>
+                    </div>
+                    <div class="hero-divider"></div>
+                    <div class="hero-stat">
+                        <span class="hero-stat-num">24h</span>
+                        <span class="hero-stat-label">Nürburgring</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 
-<section class="py-5">
+<section class="py-5" id="articles">
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2 class="section-title mb-0">Latest Articles</h2>
@@ -19,28 +42,67 @@
         </div>
         <div class="row g-4">
             {% for article in articles %}
+
+            {% if forloop.first %}
+            <div class="col-12">
+                <div class="card card-featured">
+                    <div class="row g-0">
+                        <div class="col-md-5">
+                            {% if article.image %}
+                            <img src="{{ article.image.url }}" class="img-fluid h-100 featured-img" alt="{{ article.title }}">
+                            {% else %}
+                            <div class="card-img-placeholder h-100">
+                                <span>{% if article.tags.first %}{{ article.tags.first.name }}{% else %}Racing{% endif %}</span>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-7 d-flex align-items-center">
+                            <div class="card-body p-4">
+                                <span class="featured-badge">Featured</span>
+                                <h3 class="card-title mt-2">{{ article.title }}</h3>
+                                <p class="card-text text-muted">{{ article.content|truncatewords:30 }}</p>
+                                {% if article.tags.all %}
+                                <div class="mb-3">
+                                    {% for tag in article.tags.all %}
+                                    <span class="badge tag-badge">{{ tag.name }}</span>
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+                                <p class="text-muted small mb-3">{{ article.created_at|date:"M j, Y" }}</p>
+                                <a href="{% url 'article_detail' article.pk %}" class="btn btn-danger">Read Full Story</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% else %}
             <div class="col-12 col-md-4">
                 <div class="card h-100">
                     {% if article.image %}
                     <img src="{{ article.image.url }}" class="card-img-top" alt="{{ article.title }}" style="height:200px;object-fit:cover;">
                     {% else %}
-                    <img src="https://placehold.co/600x200/1a2f5e/ffffff?text=RaceHub" class="card-img-top" alt="No image" style="height:200px;object-fit:cover;">
+                    <div class="card-img-placeholder">
+                        <span>{% if article.tags.first %}{{ article.tags.first.name }}{% else %}Racing{% endif %}</span>
+                    </div>
                     {% endif %}
                     <div class="card-body">
                         <h5 class="card-title">{{ article.title }}</h5>
-                        <p class="card-text">{{ article.content|truncatewords:20 }}</p>
+                        <p class="card-text text-muted">{{ article.content|truncatewords:18 }}</p>
                         {% if article.tags.all %}
                         <div class="mb-2">
                             {% for tag in article.tags.all %}
-                            <span class="badge" style="background:#1B4DE4;">{{ tag.name }}</span>
+                            <span class="badge tag-badge">{{ tag.name }}</span>
                             {% endfor %}
                         </div>
                         {% endif %}
                         <p class="text-muted small">{{ article.created_at|date:"M j, Y" }}</p>
-                        <a href="{% url 'article_detail' article.pk %}" class="btn btn-outline-danger">Read More</a>
+                        <a href="{% url 'article_detail' article.pk %}" class="btn btn-outline-danger btn-sm">Read More</a>
                     </div>
                 </div>
             </div>
+            {% endif %}
+
             {% empty %}
             <div class="col-12">
                 <p class="text-muted">No articles yet. Check back later!</p>

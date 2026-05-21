@@ -27,6 +27,37 @@
                     <a href="{% url 'home' %}" class="btn btn-outline-secondary">← Back to Articles</a>
                     <a href="{% url 'article_update' article.pk %}" class="btn btn-danger">Edit</a>
                 </div>
+
+                <hr class="mt-5">
+
+                <h3 class="section-title mb-4">Comments ({{ article.comments.count }})</h3>
+
+                {% for comment in article.comments.all %}
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-1">
+                            <strong>{{ comment.author.username }}</strong>
+                            <small class="text-muted">{{ comment.created_at|date:"M j, Y" }}</small>
+                        </div>
+                        <p class="mb-0">{{ comment.text }}</p>
+                    </div>
+                </div>
+                {% empty %}
+                <p class="text-muted">No comments yet. Be the first!</p>
+                {% endfor %}
+
+                <div class="mt-4">
+                    {% if user.is_authenticated %}
+                    <h5 class="mb-3">Leave a comment</h5>
+                    <form method="post" action="{% url 'add_comment' article.pk %}">
+                        {% csrf_token %}
+                        {{ comment_form.text }}
+                        <button type="submit" class="btn btn-danger mt-3">Post Comment</button>
+                    </form>
+                    {% else %}
+                    <p class="text-muted"><a href="{% url 'login' %}">Sign in</a> to leave a comment.</p>
+                    {% endif %}
+                </div>
             </div>
         </div>
     </div>
