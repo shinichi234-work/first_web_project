@@ -2,29 +2,85 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.urls import reverse_lazy
 from .models import Article, Comment
 from .forms import FeedbackForm, ArticleForm, CommentForm
 
 
-def index(request):
-    articles = Article.objects.all()
-    context = {
-        'title': 'RaceHub',
-        'welcome_text': 'Your Ultimate Racing News Hub',
-        'articles': articles,
-    }
-    return render(request, 'pages/index.html', context)
+class HomeView(ListView):
+    model = Article
+    template_name = 'pages/index.html'
+    context_object_name = 'articles'
+    ordering = ['-created_at']
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'RaceHub'
+        context['welcome_text'] = 'Your Ultimate Racing News Hub'
+        return context
+
+
+class ArticleDetailView(DetailView):
+    model = Article
+    template_name = 'pages/article_detail.html'
+    context_object_name = 'article'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['comment_form'] = CommentForm()
+        return context
+
+
+class ArticleCreateView(LoginRequiredMixin, CreateView):
+    model = Article
+    form_class = ArticleForm
+    template_name = 'pages/article_form.html'
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('article_detail', kwargs={'pk': self.object.pk})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form_title'] = 'New Article'
+        return context
+
+
+class ArticleUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Article
+    form_class = ArticleForm
+    template_name = 'pages/article_form.html'
+
+    def test_func(self):
+        obj = self.get_object()
+        return obj.author == self.request.user
+
+    def get_success_url(self):
+        return reverse_lazy('article_detail', kwargs={'pk': self.object.pk})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form_title'] = 'Edit Article'
+        return context
+
+
+class ArticleDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Article
+    template_name = 'pages/article_confirm_delete.html'
+    success_url = reverse_lazy('home')
+
+    def test_func(self):
+        obj = self.get_object()
+        return obj.author == self.request.user
 
 
 def about(request):
     return render(request, 'pages/about.html')
-
-
-def article_detail(request, pk):
-    article = get_object_or_404(Article, pk=pk)
-    comment_form = CommentForm()
-    context = {'article': article, 'comment_form': comment_form}
-    return render(request, 'pages/article_detail.html', context)
 
 
 @login_required
@@ -40,34 +96,6 @@ def add_comment(request, pk):
     else:
         messages.error(request, 'Could not add comment. Please try again.')
     return redirect('article_detail', pk=pk)
-
-
-@login_required
-def article_create(request):
-    if request.method == 'POST':
-        form = ArticleForm(request.POST, request.FILES)
-        if form.is_valid():
-            article = form.save(commit=False)
-            article.author = request.user
-            article.save()
-            form.save_m2m()
-            return redirect('article_detail', pk=article.pk)
-    else:
-        form = ArticleForm()
-    return render(request, 'pages/article_form.html', {'form': form, 'form_title': 'New Article'})
-
-
-@login_required
-def article_update(request, pk):
-    article = get_object_or_404(Article, pk=pk)
-    if request.method == 'POST':
-        form = ArticleForm(request.POST, request.FILES, instance=article)
-        if form.is_valid():
-            form.save()
-            return redirect('article_detail', pk=article.pk)
-    else:
-        form = ArticleForm(instance=article)
-    return render(request, 'pages/article_form.html', {'form': form, 'form_title': 'Edit Article'})
 
 
 def register(request):

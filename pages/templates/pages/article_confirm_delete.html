@@ -1,0 +1,21 @@
+{% extends 'pages/base.html' %}
+
+{% block title %}Delete Article — RaceHub{% endblock %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <h1 class="mb-4 section-title">Delete Article</h1>
+                <p>Are you sure you want to delete <strong>{{ object.title }}</strong>? This action cannot be undone.</p>
+                <form method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Yes, Delete</button>
+                    <a href="{% url 'article_detail' object.pk %}" class="btn btn-outline-secondary ms-2">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

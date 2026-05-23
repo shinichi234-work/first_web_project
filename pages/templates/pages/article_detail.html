@@ -25,7 +25,10 @@
                 </div>
                 <div class="mt-5 d-flex gap-2">
                     <a href="{% url 'home' %}" class="btn btn-outline-secondary">← Back to Articles</a>
+                    {% if user == article.author %}
                     <a href="{% url 'article_update' article.pk %}" class="btn btn-danger">Edit</a>
+                    <a href="{% url 'article_delete' article.pk %}" class="btn btn-outline-danger">Delete</a>
+                    {% endif %}
                 </div>
 
                 <hr class="mt-5">
