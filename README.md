@@ -1,8 +1,44 @@
-# My First Django Project
+# RaceHub
 
-This project is a learning sandbox.
+## Описание
 
-## How to run
+Блог о мотоспорте — новости, статьи и обсуждения о Formula 1, MotoGP, WEC и других гоночных сериях.
+
+## Функциональность
+
+- Просмотр списка статей и детальная страница
+- Создание, редактирование и удаление статей
+- Теги для категоризации статей
+- Комментарии к статьям
+- Регистрация и авторизация пользователей
+- Загрузка обложек для статей
+
+## Стек
+
+- Python 3 / Django
+- PostgreSQL (Docker)
+- Bootstrap 5
+
+## Запуск
+
+1. Скопировать `.env.example` в `.env` и заполнить своими данными
+2. Запустить базу данных:
 ```
-python main.py
+docker-compose up -d
+```
+3. Установить зависимости:
+```
+pip install -r requirements.txt
+```
+4. Применить миграции:
+```
+python manage.py migrate
+```
+5. Создать суперпользователя:
+```
+python manage.py createsuperuser
+```
+6. Запустить сервер:
+```
+python manage.py runserver
 ```
